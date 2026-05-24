@@ -362,6 +362,53 @@ def export_figure(race: RaceDefinition, evaluations: pd.DataFrame) -> Path:
     return output
 
 
+def export_market_swing_zoom_figure(race: RaceDefinition, frame: pd.DataFrame) -> Path:
+    """Write one market-only zoom chart around the biggest swing date."""
+    market = frame[["date", "market_prob_winner"]].dropna().copy().sort_values("date")
+    market["market_delta"] = market["market_prob_winner"].diff()
+    swing_row = market.loc[market["market_delta"].abs().idxmax()]
+    swing_date = swing_row["date"]
+    window = market[(market["date"] >= swing_date - pd.Timedelta(days=10)) & (market["date"] <= swing_date + pd.Timedelta(days=10))].copy()
+
+    figure = go.Figure()
+    figure.add_trace(
+        go.Scatter(
+            x=window["date"],
+            y=window["market_prob_winner"],
+            mode="lines+markers",
+            name="Market probability",
+            line={"color": "#c0392b", "width": 3},
+            marker={"size": 9},
+            hovertemplate="Date: %{x|%Y-%m-%d}<br>Winner probability: %{y:.1f}<extra></extra>",
+        )
+    )
+    figure.add_vline(x=swing_date, line_dash="dash", line_color="#111111")
+    figure.add_trace(
+        go.Scatter(
+            x=[swing_date],
+            y=[swing_row["market_prob_winner"]],
+            mode="markers+text",
+            name="Biggest swing day",
+            marker={"size": 15, "color": "#111111"},
+            text=[f"{swing_date.date()}: {swing_row['market_delta']:+.1f} pts"],
+            textposition="top center",
+            hovertemplate="Biggest swing day<br>Date: %{x|%Y-%m-%d}<br>Winner probability: %{y:.1f}<extra></extra>",
+        )
+    )
+    figure.update_layout(
+        title=f"{race.race_label}: 10 days before and after the biggest market swing",
+        xaxis_title="Date",
+        yaxis_title="Market probability for eventual winner",
+        yaxis={"range": [0, 100]},
+        legend={"orientation": "h", "y": -0.2},
+        template="plotly_white",
+        height=500,
+    )
+    output = FIGURES_DIR / f"{race.race_id}_market_swing.html"
+    figure.write_html(output, include_plotlyjs="cdn")
+    return output
+
+
 def race_takeaway(race: RaceDefinition, evaluations: pd.DataFrame) -> str:
     subset = evaluations[evaluations["race_id"] == race.race_id].copy()
     summary_bits = []
@@ -483,8 +530,10 @@ for race in races:
 
 evaluations = pd.DataFrame(evaluation_rows)
 figure_paths = {}
+market_swing_paths = {}
 for race in races:
     figure_paths[race.race_id] = export_figure(race, evaluations)
+    market_swing_paths[race.race_id] = export_market_swing_zoom_figure(race, processed_frames[race.race_id])
 
 summary_rows = []
 for race in races:
@@ -511,7 +560,7 @@ display(
         "- Market data is scraped from embedded Google Charts arrays in ElectionBettingOdds HTML pages.\n"
         "- Candidate-race polling checkpoints come from a checked-in fixture built from archived polling-average reporting.\n"
         "- Checkpoints use the latest observation on or before the target date. If no earlier observation exists, the notebook falls back to the earliest subsequent one and records that choice.\n"
-        "- The exported charts visualize only the checkpoint classifications: no, toss-up, or yes.\n"
+        "- Each race now has both a checkpoint comparison chart and a separate market-only swing zoom chart.\n"
         "- The 2022 chamber rows use a forecast-style non-market probability fixture because the historical FiveThirtyEight forecast CSV links no longer resolve to the original files."
     )
 )
@@ -524,7 +573,8 @@ display(summary)
 RACE_OUTPUTS = r'''display(Markdown("## Race Sections"))
 for race in races:
     display(Markdown(race_takeaway(race, evaluations)))
-    display(Markdown(f"Figure export: `{figure_paths[race.race_id].relative_to(ROOT)}`"))
+    display(Markdown(f"Comparison figure: `{figure_paths[race.race_id].relative_to(ROOT)}`"))
+    display(Markdown(f"Market swing figure: `{market_swing_paths[race.race_id].relative_to(ROOT)}`"))
 '''
 
 
