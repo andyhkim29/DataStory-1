@@ -300,44 +300,62 @@ def checkpoint_evaluations(race: RaceDefinition, frame: pd.DataFrame) -> list[di
     return evaluations
 
 
-def export_figure(race: RaceDefinition, frame: pd.DataFrame) -> Path:
-    """Write one Plotly HTML chart per analytical row."""
+def export_figure(race: RaceDefinition, evaluations: pd.DataFrame) -> Path:
+    """Write one checkpoint classification chart per analytical row."""
+    subset = evaluations[evaluations["race_id"] == race.race_id].copy()
+    order = ["90d", "30d", "eve"]
+    label_map = {"90d": "90 days", "30d": "30 days", "eve": "Election eve"}
+    score_map = {"no": 0, "toss-up": 1, "yes": 2, "missing": np.nan}
+
+    def series_for(source_kind: str) -> pd.DataFrame:
+        frame = subset[subset["source_kind"] == source_kind].copy()
+        frame["checkpoint_name"] = pd.Categorical(frame["checkpoint_name"], categories=order, ordered=True)
+        frame = frame.sort_values("checkpoint_name")
+        frame["x_label"] = frame["checkpoint_name"].map(label_map)
+        frame["score"] = frame["classification"].map(score_map)
+        return frame
+
+    market = series_for("market")
+    poll = series_for("poll")
+
     figure = go.Figure()
     figure.add_trace(
         go.Scatter(
-            x=frame["date"],
-            y=frame["market_prob_winner"],
-            mode="lines",
-            name=f"Market: {race.eventual_winner}",
+            x=market["x_label"],
+            y=market["score"],
+            mode="lines+markers",
+            name="Market",
             line={"color": "#c0392b", "width": 3},
+            marker={"size": 10},
+            text=market["classification"],
+            hovertemplate="Checkpoint: %{x}<br>Market: %{text}<extra></extra>",
         )
     )
     figure.add_trace(
         go.Scatter(
-            x=frame["date"],
-            y=frame["poll_value_winner"],
+            x=poll["x_label"],
+            y=poll["score"],
             mode="lines+markers",
-            name=f"Polling side: {race.eventual_winner}",
+            name="Poll predictions",
             line={"color": "#1f77b4", "width": 3},
-            yaxis="y2",
+            marker={"size": 10},
+            text=poll["classification"],
+            hovertemplate="Checkpoint: %{x}<br>Poll predictions: %{text}<extra></extra>",
         )
     )
-    for checkpoint_name, checkpoint in race.checkpoints.items():
-        figure.add_vline(x=checkpoint, line_dash="dot", line_color="#555555")
-        figure.add_annotation(x=checkpoint, y=1.02, yref="paper", text=checkpoint_name, showarrow=False)
     figure.update_layout(
-        title=f"{race.race_label}: market signal vs polling-side signal",
-        xaxis_title="Date",
-        yaxis_title="Market probability for eventual winner",
-        yaxis={"range": [0, 100]},
-        yaxis2={
-            "title": "Polling-side signal for eventual winner",
-            "overlaying": "y",
-            "side": "right",
+        title=f"{race.race_label}: who each source favored at the checkpoints",
+        xaxis_title="Checkpoint days before the election",
+        yaxis_title="Favored outcome",
+        yaxis={
+            "tickmode": "array",
+            "tickvals": [0, 1, 2],
+            "ticktext": ["no", "toss-up", "yes"],
+            "range": [-0.2, 2.2],
         },
         legend={"orientation": "h", "y": -0.2},
         template="plotly_white",
-        height=550,
+        height=450,
     )
     output = FIGURES_DIR / f"{race.race_id}.html"
     figure.write_html(output, include_plotlyjs="cdn")
@@ -355,7 +373,7 @@ def race_takeaway(race: RaceDefinition, evaluations: pd.DataFrame) -> str:
     if race.poll_kind == "forecast":
         method_note = "The chamber row uses a forecast-style non-market probability rather than raw polling."
     else:
-        method_note = "The polling side reflects weighted daily poll averages built from raw poll tables."
+        method_note = "The polling side is a checked-in checkpoint record of who polling averages favored."
     return f"**{race.race_label}.** Eventual winner: {race.eventual_winner}. {joined}. {method_note}"
 '''
 
@@ -454,7 +472,6 @@ for race in races:
     )
 
 processed_frames = {}
-figure_paths = {}
 evaluation_rows = []
 
 for race in races:
@@ -462,10 +479,12 @@ for race in races:
     frame = frame.sort_values("date")
     processed_frames[race.race_id] = frame
     frame.to_csv(PROCESSED_DIR / f"{race.race_id}.csv", index=False)
-    figure_paths[race.race_id] = export_figure(race, frame)
     evaluation_rows.extend(checkpoint_evaluations(race, frame))
 
 evaluations = pd.DataFrame(evaluation_rows)
+figure_paths = {}
+for race in races:
+    figure_paths[race.race_id] = export_figure(race, evaluations)
 
 summary_rows = []
 for race in races:
@@ -492,6 +511,7 @@ display(
         "- Market data is scraped from embedded Google Charts arrays in ElectionBettingOdds HTML pages.\n"
         "- Candidate-race polling checkpoints come from a checked-in fixture built from archived polling-average reporting.\n"
         "- Checkpoints use the latest observation on or before the target date. If no earlier observation exists, the notebook falls back to the earliest subsequent one and records that choice.\n"
+        "- The exported charts visualize only the checkpoint classifications: no, toss-up, or yes.\n"
         "- The 2022 chamber rows use a forecast-style non-market probability fixture because the historical FiveThirtyEight forecast CSV links no longer resolve to the original files."
     )
 )
