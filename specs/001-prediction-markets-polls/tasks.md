@@ -22,10 +22,10 @@ description: "Task list for Prediction Markets vs. Polls Story"
 
 **Purpose**: Create the project shell and baseline dependency metadata
 
-- [ ] T001 Create the notebook project directories in `prediction-markets-story/`, `prediction-markets-story/data/raw/`, `prediction-markets-story/data/processed/`, and `prediction-markets-story/figures/`
-- [ ] T002 Create dependency pins and execution notes in `prediction-markets-story/requirements.txt`
-- [ ] T003 [P] Create the project description and run instructions in `prediction-markets-story/README.md`
-- [ ] T004 [P] Create placeholder keep-files for tracked empty directories in `prediction-markets-story/data/raw/.gitkeep`, `prediction-markets-story/data/processed/.gitkeep`, and `prediction-markets-story/figures/.gitkeep`
+- [X] T001 Create the notebook project directories in `prediction-markets-story/`, `prediction-markets-story/data/raw/`, `prediction-markets-story/data/processed/`, and `prediction-markets-story/figures/`
+- [X] T002 Create dependency pins and execution notes in `prediction-markets-story/requirements.txt`
+- [X] T003 [P] Create the project description and run instructions in `prediction-markets-story/README.md`
+- [X] T004 [P] Create placeholder keep-files for tracked empty directories in `prediction-markets-story/data/raw/.gitkeep`, `prediction-markets-story/data/processed/.gitkeep`, and `prediction-markets-story/figures/.gitkeep`
 
 ---
 
@@ -35,12 +35,12 @@ description: "Task list for Prediction Markets vs. Polls Story"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Create the top-level notebook structure, imports, and narrative section headings in `prediction-markets-story/notebook.ipynb`
-- [ ] T006 Implement shared configuration cells for project-relative paths, election dates, checkpoint dates, and toss-up thresholds in `prediction-markets-story/notebook.ipynb`
-- [ ] T007 Implement source acquisition and raw-file caching helpers with docstrings in `prediction-markets-story/notebook.ipynb`
-- [ ] T008 Implement shared normalization helpers for race definitions, source provenance, and date parsing in `prediction-markets-story/notebook.ipynb`
-- [ ] T009 Implement shared checkpoint-selection and favored-side classification helpers using the non-lookahead rule in `prediction-markets-story/notebook.ipynb`
-- [ ] T010 Implement shared figure-export and processed-CSV export helpers in `prediction-markets-story/notebook.ipynb`
+- [X] T005 Create the top-level notebook structure, imports, and narrative section headings in `prediction-markets-story/notebook.ipynb`
+- [X] T006 Implement shared configuration cells for project-relative paths, election dates, checkpoint dates, and toss-up thresholds in `prediction-markets-story/notebook.ipynb`
+- [X] T007 Implement source acquisition and raw-file caching helpers with docstrings in `prediction-markets-story/notebook.ipynb`
+- [X] T008 Implement shared normalization helpers for race definitions, source provenance, and date parsing in `prediction-markets-story/notebook.ipynb`
+- [X] T009 Implement shared checkpoint-selection and favored-side classification helpers using the non-lookahead rule in `prediction-markets-story/notebook.ipynb`
+- [X] T010 Implement shared figure-export and processed-CSV export helpers in `prediction-markets-story/notebook.ipynb`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -54,12 +54,12 @@ description: "Task list for Prediction Markets vs. Polls Story"
 
 ### Implementation for User Story 1
 
-- [ ] T011 [US1] Add the introduction, methodology overview, and dependency/version notes to `prediction-markets-story/notebook.ipynb`
-- [ ] T012 [US1] Implement first-run download or local-read logic for all required market and polling source assets in `prediction-markets-story/notebook.ipynb`
-- [ ] T013 [US1] Implement the source inventory and inline source-documentation section in `prediction-markets-story/notebook.ipynb`
-- [ ] T014 [US1] Implement the cleaned-output writer that creates one processed CSV per analytical row in `prediction-markets-story/notebook.ipynb`
-- [ ] T015 [US1] Implement the notebook execution flow that creates required directories if absent and runs the full pipeline in `prediction-markets-story/notebook.ipynb`
-- [ ] T016 [US1] Validate the notebook setup instructions and dependency list against the actual workflow in `prediction-markets-story/README.md`
+- [X] T011 [US1] Add the introduction, methodology overview, and dependency/version notes to `prediction-markets-story/notebook.ipynb`
+- [X] T012 [US1] Implement first-run download or local-read logic for all required market and polling source assets in `prediction-markets-story/notebook.ipynb`
+- [X] T013 [US1] Implement the source inventory and inline source-documentation section in `prediction-markets-story/notebook.ipynb`
+- [X] T014 [US1] Implement the cleaned-output writer that creates one processed CSV per analytical row in `prediction-markets-story/notebook.ipynb`
+- [X] T015 [US1] Implement the notebook execution flow that creates required directories if absent and runs the full pipeline in `prediction-markets-story/notebook.ipynb`
+- [X] T016 [US1] Validate the notebook setup instructions and dependency list against the actual workflow in `prediction-markets-story/README.md`
 
 **Checkpoint**: At this point, the notebook should run end to end and materialize the expected directory structure and output files
 
@@ -73,13 +73,13 @@ description: "Task list for Prediction Markets vs. Polls Story"
 
 ### Implementation for User Story 2
 
-- [ ] T017 [US2] Add the analytical row definitions for 2020 president, 2022 House control, 2022 Senate control, 2022 Pennsylvania Senate, and 2024 president in `prediction-markets-story/notebook.ipynb`
-- [ ] T018 [US2] Implement market-series loading and normalization for all five analytical rows in `prediction-markets-story/notebook.ipynb`
-- [ ] T019 [US2] Implement candidate-race polling-series loading and normalization for the 2020 presidential, 2022 Pennsylvania Senate, and 2024 presidential rows in `prediction-markets-story/notebook.ipynb`
-- [ ] T020 [US2] Implement chamber-control forecast loading and normalization for the 2022 House control and 2022 Senate control rows in `prediction-markets-story/notebook.ipynb`
-- [ ] T021 [US2] Implement per-race checkpoint extraction and favored-side classification for all rows in `prediction-markets-story/notebook.ipynb`
-- [ ] T022 [US2] Implement the five-row summary table with the required columns in `prediction-markets-story/notebook.ipynb`
-- [ ] T023 [US2] Verify that each file written under `prediction-markets-story/data/processed/` contains the required schema and date ordering in `prediction-markets-story/notebook.ipynb`
+- [X] T017 [US2] Add the analytical row definitions for 2020 president, 2022 House control, 2022 Senate control, 2022 Pennsylvania Senate, and 2024 president in `prediction-markets-story/notebook.ipynb`
+- [X] T018 [US2] Implement market-series loading and normalization for all five analytical rows in `prediction-markets-story/notebook.ipynb`
+- [X] T019 [US2] Implement candidate-race polling-series loading and normalization for the 2020 presidential, 2022 Pennsylvania Senate, and 2024 presidential rows in `prediction-markets-story/notebook.ipynb`
+- [X] T020 [US2] Implement chamber-control forecast loading and normalization for the 2022 House control and 2022 Senate control rows in `prediction-markets-story/notebook.ipynb`
+- [X] T021 [US2] Implement per-race checkpoint extraction and favored-side classification for all rows in `prediction-markets-story/notebook.ipynb`
+- [X] T022 [US2] Implement the five-row summary table with the required columns in `prediction-markets-story/notebook.ipynb`
+- [X] T023 [US2] Verify that each file written under `prediction-markets-story/data/processed/` contains the required schema and date ordering in `prediction-markets-story/notebook.ipynb`
 
 **Checkpoint**: At this point, the notebook should produce the complete cross-race comparison table and processed per-race datasets
 
@@ -93,13 +93,13 @@ description: "Task list for Prediction Markets vs. Polls Story"
 
 ### Implementation for User Story 3
 
-- [ ] T024 [US3] Add the cleaning-and-alignment narrative section explaining unit differences, fallback rules, and chamber-control treatment in `prediction-markets-story/notebook.ipynb`
-- [ ] T025 [US3] Implement the 2020 presidential race section, chart export, and short written finding in `prediction-markets-story/notebook.ipynb`
-- [ ] T026 [US3] Implement the 2022 House control race section, chart export, and short written finding in `prediction-markets-story/notebook.ipynb`
-- [ ] T027 [US3] Implement the 2022 Senate control race section, chart export, and short written finding in `prediction-markets-story/notebook.ipynb`
-- [ ] T028 [US3] Implement the 2022 Pennsylvania Senate race section, chart export, and short written finding in `prediction-markets-story/notebook.ipynb`
-- [ ] T029 [US3] Implement the 2024 presidential race section, chart export, and short written finding including the Polymarket concentration caveat in `prediction-markets-story/notebook.ipynb`
-- [ ] T030 [US3] Implement the final findings and caveats section under 500 words in `prediction-markets-story/notebook.ipynb`
+- [X] T024 [US3] Add the cleaning-and-alignment narrative section explaining unit differences, fallback rules, and chamber-control treatment in `prediction-markets-story/notebook.ipynb`
+- [X] T025 [US3] Implement the 2020 presidential race section, chart export, and short written finding in `prediction-markets-story/notebook.ipynb`
+- [X] T026 [US3] Implement the 2022 House control race section, chart export, and short written finding in `prediction-markets-story/notebook.ipynb`
+- [X] T027 [US3] Implement the 2022 Senate control race section, chart export, and short written finding in `prediction-markets-story/notebook.ipynb`
+- [X] T028 [US3] Implement the 2022 Pennsylvania Senate race section, chart export, and short written finding in `prediction-markets-story/notebook.ipynb`
+- [X] T029 [US3] Implement the 2024 presidential race section, chart export, and short written finding including the Polymarket concentration caveat in `prediction-markets-story/notebook.ipynb`
+- [X] T030 [US3] Implement the final findings and caveats section under 500 words in `prediction-markets-story/notebook.ipynb`
 
 **Checkpoint**: All race sections should now be complete with figures, explanations, and a constrained final narrative
 
@@ -109,10 +109,10 @@ description: "Task list for Prediction Markets vs. Polls Story"
 
 **Purpose**: Validate the complete deliverable and clean up supporting documentation
 
-- [ ] T031 [P] Reconcile `prediction-markets-story/README.md` with the final notebook behavior, dependency pins, and output locations
-- [ ] T032 Run end-to-end notebook execution and fix any reproducibility issues in `prediction-markets-story/notebook.ipynb`
-- [ ] T033 Validate that all files in `prediction-markets-story/data/processed/` and `prediction-markets-story/figures/` are regenerated cleanly from notebook execution
-- [ ] T034 Perform a final narrative review for terminology consistency, source traceability, and scope discipline in `prediction-markets-story/notebook.ipynb`
+- [X] T031 [P] Reconcile `prediction-markets-story/README.md` with the final notebook behavior, dependency pins, and output locations
+- [X] T032 Run end-to-end notebook execution and fix any reproducibility issues in `prediction-markets-story/notebook.ipynb`
+- [X] T033 Validate that all files in `prediction-markets-story/data/processed/` and `prediction-markets-story/figures/` are regenerated cleanly from notebook execution
+- [X] T034 Perform a final narrative review for terminology consistency, source traceability, and scope discipline in `prediction-markets-story/notebook.ipynb`
 
 ---
 

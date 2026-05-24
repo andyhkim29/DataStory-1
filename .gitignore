@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+prediction-markets-story/data/raw/*.download
+prediction-markets-story/data/raw/*.tmp
+prediction-markets-story/figures/*.tmp
+.DS_Store
